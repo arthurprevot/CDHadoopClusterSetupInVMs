@@ -8,7 +8,7 @@ Vagrant::Config.run do |config|
     #node1_config.vm.customize do |vm|
     #  vm.memory_size = 3029
     #end
-    node1_config.vm.customize ["modifyvm", :id, "--memory", 3029]
+    node1_config.vm.customize ["modifyvm", :id, "--memory", 3029] # i.e. allocate 3GB of RAM
   end
 
   config.vm.define :node2 do |node2_config| ### DataNode and TaskTracker
@@ -19,7 +19,7 @@ Vagrant::Config.run do |config|
     #node2_config.vm.customize do |vm|
     #  vm.memory_size = 3029
     #end
-    node2_config.vm.customize ["modifyvm", :id, "--memory", 3029]
+    node2_config.vm.customize ["modifyvm", :id, "--memory", 3029] # i.e. allocate 3GB of RAM
   end
 
   config.vm.define :node3 do |node3_config| ### DataNode and TaskTracker
@@ -30,7 +30,7 @@ Vagrant::Config.run do |config|
     #node3_config.vm.customize do |vm|
     #  vm.memory_size = 1546
     #end
-    node3_config.vm.customize ["modifyvm", :id, "--memory", 1546]
+    node3_config.vm.customize ["modifyvm", :id, "--memory", 1546] # i.e. allocate 1.5GB of RAM
   end
 
   config.vm.define :node4 do |node4_config| ### DataNode and TaskTracker
@@ -41,7 +41,7 @@ Vagrant::Config.run do |config|
     #node4_config.vm.customize do |vm|
     #  vm.memory_size = 1546
     #end
-    node4_config.vm.customize ["modifyvm", :id, "--memory", 1546]
+    node4_config.vm.customize ["modifyvm", :id, "--memory", 1546] # i.e. allocate 1.5GB of RAM
   end
 end
 
