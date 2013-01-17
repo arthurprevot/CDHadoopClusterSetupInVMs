@@ -12,16 +12,17 @@ This is not fully automated for now. Could do that later through chef or puppet 
 
 #------ VM setup (on top of vagrant) ------------------------
 
-# Set a password for root for Cloudera manager access on every node (May not be needed though if I know orig password). Needs to be run on every node: 
-sudo passwd root
+# Note: to connect to a specific node, on a host OS terminal, type 'vagrant ssh node1' (or replace 'node1' by 'node2', 'node3', 'node4')
+
+# Set a password for root for Cloudera manager access on every node (May not be needed though if I know orig password). It will be needed later from cloudera manager interface. Needs to be run on every node: 
+sudo passwd root # type in your password.
 
 #Also needed by the Cloudera manager for cluster installation:
-#sudo apt-get install openssh-client # already setup.
-#sudo apt-get install openssh-server # already setup, probably by vagrant
+#sudo apt-get install openssh-client # already setup for me.
+#sudo apt-get install openssh-server # already setup for me.
 
-#Make the following changes to /etc/hosts. Not modifying the file will cause a number of cluster startup errors such as not being able to start hBase or creating a number of default directories:
-
-# On each node:
+# Make the following changes to /etc/hosts. Not modifying the file will cause a number of cluster startup errors such as not being able to start hBase or creating a number of default directories.
+# So, on each node:
 sudo nano /etc/hosts # and put in (this is the same content for every node, each node must know of the address of all other nodes.) :
 
 #----------------------
@@ -29,23 +30,18 @@ sudo nano /etc/hosts # and put in (this is the same content for every node, each
 #127.0.0.1 precise64 localhost127.0.0.1 localhost.domain localhost222.222.222.201 node1.domain node1222.222.222.202 node2.domain node2222.222.222.203 node3.domain node3
 222.222.222.204 node4.domain node4
 #----------------------
-# Keep the same content on all 4 nodes.
-# Had a lot of pb trying different things for this setup so watch out. See https://ccp.cloudera.com/display/CDH4DOC/Configuring+Network+Hosts. Good overal but the checks mentioned there don't work for me, so my setup should not work according to them. Read one part of the solution for me in https://groups.google.com/a/cloudera.org/forum/?fromgroups=#!topic/scm-users/KlJpUlRXcTk. Other one I didn't understand but which solved pb it seems: http://stackoverflow.com/questions/8579105/cloudera-manager-fails-to-add-hosts and in https://groups.google.com/a/cloudera.org/forum/?fromgroups=#!topic/cdh-user/u9NjAg1wQt4.
-
-#Install the GNOME session fallback package:
-#sudo apt-get install gnome-session-fallback # didn't do as GUI less anyway for me.
+# Had pb for this setup so watch out. See https://ccp.cloudera.com/display/CDH4DOC/Configuring+Network+Hosts. Good overal but the checks mentioned there don't work for me, so my setup should not work according to them. Read one part of the solution for me in https://groups.google.com/a/cloudera.org/forum/?fromgroups=#!topic/scm-users/KlJpUlRXcTk. Other one which solved pb: http://stackoverflow.com/questions/8579105/cloudera-manager-fails-to-add-hosts and in https://groups.google.com/a/cloudera.org/forum/?fromgroups=#!topic/cdh-user/u9NjAg1wQt4.
 
 # Install cloudera manager server from node1 (get bin file from cloudera website):
-#chmod 755 cloudera-manager-installer.bin # can be 
+#chmod 755 cloudera-manager-installer.bin
 sudo ./cloudera-manager-installer.bin
 
 Go in cloudera web interface (in web browser on host OS, go to http://222.222.222.201:7180) :
 login: admin
 pass: admin
 
-# Now will install cloudera manager client on each cluster node.
-# On cloudera manager web interface, choose machine to setup on: 222.222.222.[201-204] # should detect ssh server.
+# Now CM will suggest to install cloudera manager client on each cluster node. From its web interface, choose machine to setup: 222.222.222.[201-204]. It should detect ssh server.
 # Then cloudera manager will go through installation of CDH on each node (with various components depending on nodes). 
-# note: installation on several nodes may fail if all ran in parallel but all from the same machine and from wifi (it worked from LAN connection), so rerun one by one for these that failed and it should work.
+# note: installation on several nodes may fail if all ran in parallel from the same machine and over wifi (it worked from LAN connection), so rerun one by one for these that failed and it should work.
 
 # The cluster should now be setup. 
